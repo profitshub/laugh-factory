@@ -12,90 +12,101 @@
             --gradient-2: #4ecdc4;
             --font-primary: 'Comic Neue', cursive;
             --font-secondary: 'Patrick Hand', cursive;
+            --header-height: 10vh;
+            --card-max-height: 80vh;
         }
 
         body {
             margin: 0;
-            min-height: 100vh;
+            height: 100vh;
             background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
             font-family: var(--font-primary);
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 0;
             box-sizing: border-box;
+            overflow: hidden;
         }
 
         .header {
-            text-align: center;
-            margin-bottom: 2rem;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
         }
 
         .logo {
-            max-width: min(90vw, 400px);
-            height: auto;
-            margin: 0 auto;
+            max-height: 100%;
+            width: auto;
         }
 
         .container {
-            width: 90%;
-            max-width: 600px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
-            text-align: center;
-            position: relative;
+            height: calc(100vh - var(--header-height));
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            box-sizing: border-box;
         }
 
         .joke-card {
-            margin: 20px 0;
+            max-height: var(--card-max-height);
+            width: 90%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 15px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             position: relative;
-            opacity: 1;
-            transition: opacity 0.3s ease-in-out;
+            overflow: hidden;
         }
 
         .joke-image {
             width: 100%;
-            max-width: 400px;
-            height: 300px;
-            border-radius: 15px;
-            object-fit: cover;
-            margin: 0 auto 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: opacity 0.5s ease-in-out;
-            opacity: 0;
-        }
-
-        .joke-image.loaded {
-            opacity: 1;
+            height: auto;
+            max-height: 40vh;
+            object-fit: contain;
+            border-radius: 10px;
         }
 
         .joke-text {
-            font-size: 1.4rem;
-            color: #333;
-            margin: 20px 0;
-            min-height: 80px;
-            line-height: 1.5;
-            padding: 0 10px;
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            margin: 10px 0;
+            flex-grow: 0;
+        }
+
+        .share-container {
+            padding: 5px 0;
+        }
+
+        .share-message {
+            font-size: clamp(0.8rem, 3vw, 1rem);
+            margin: 5px 0;
+        }
+
+        .share-buttons {
+            gap: 15px;
+        }
+
+        .share-button {
+            padding: 8px;
+            width: 40px;
+            height: 40px;
         }
 
         .nav-button {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 50px;
-            background: linear-gradient(45deg, var(--gradient-1), var(--gradient-2));
-            color: white;
-            font-size: 1.1rem;
-            cursor: pointer;
-            margin: 10px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .nav-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-top: 10px;
+            padding: 8px 20px;
+            font-size: clamp(0.9rem, 3vw, 1.2rem);
         }
 
         .loading {
@@ -143,47 +154,19 @@
             }
         }
 
-        .share-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .share-message {
-            font-size: 1rem;
-            color: #666;
-        }
-
-        .share-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .share-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 12px;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            font-size: 1.5rem;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .share-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .share-button:active {
-            transform: translateY(0);
+        @media (max-height: 600px) {
+            .share-message {
+                display: none;
+            }
+            
+            .joke-image {
+                max-height: 30vh;
+            }
+            
+            .share-button {
+                width: 35px;
+                height: 35px;
+            }
         }
 
         .share-button.facebook { color: #1877f2; }
@@ -289,6 +272,10 @@ let jokes = []; // Initialize jokes array
 let currentJoke = null; // Initialize currentJoke
 let preloadedImages = new Map();
 
+// Add these variables with your other initializations
+let recentJokes = []; // Keep track of recently shown jokes
+const MAX_RECENT = 10; // How many recent jokes to remember
+
 // Add these DOM element selections at the start of your script, with other constants
 const jokeText = document.getElementById('jokeText');
 const jokeImage = document.getElementById('jokeImage');
@@ -337,16 +324,32 @@ async function fetchJokes() {
 function showRandomJoke() {
     if (!jokes.length) return;
     
-    const randomIndex = Math.floor(Math.random() * jokes.length);
-    currentJoke = jokes[randomIndex];
+    // Filter out recently shown jokes
+    const availableJokes = jokes.filter(joke => !recentJokes.includes(joke));
     
+    // If we've shown all jokes, reset the recent list
+    if (availableJokes.length === 0) {
+        recentJokes = [];
+        availableJokes.push(...jokes);
+    }
+    
+    // Get a random joke from available ones
+    const randomIndex = Math.floor(Math.random() * availableJokes.length);
+    currentJoke = availableJokes[randomIndex];
+    
+    // Add to recent jokes and maintain max length
+    recentJokes.push(currentJoke);
+    if (recentJokes.length > MAX_RECENT) {
+        recentJokes.shift();
+    }
+    
+    // Update display
     jokeCard.style.opacity = '0';
     jokeText.textContent = currentJoke.text;
     
     // Update image path for GitHub Pages
-    const repoName = 'laugh-factory'; // Your repository name
+    const repoName = 'laugh-factory';
     const imagePath = `/${repoName}/images/${currentJoke.localImage}`;
-    console.log('Loading image:', imagePath);
     
     const img = new Image();
     img.onload = function() {
