@@ -30,39 +30,41 @@
         }
 
         .header {
-            height: 80px;  /* Changed from var(--header-height) to fixed height */
+            height: 60px;  /* Reduced from 80px */
             display: flex;
             align-items: center;
             justify-content: center;
             width: 100%;
-            padding: 10px;
+            padding: 5px;  /* Reduced from 10px */
             box-sizing: border-box;
+            margin-bottom: 10px; /* Add small margin to separate from card */
         }
 
         .logo {
-            height: 60px;  /* Fixed height */
+            height: 50px;  /* Adjusted from 60px */
             width: auto;
             object-fit: contain;
         }
 
         .container {
-            height: calc(100vh - var(--header-height));
+            height: calc(100vh - 70px); /* Adjusted to account for header height */
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 10px;
+            justify-content: flex-start; /* Changed from center to flex-start */
+            padding: 0 5px; /* Horizontal padding only */
             box-sizing: border-box;
+            margin-top: 0; /* Remove any top margin */
         }
 
         .joke-card {
             max-height: var(--card-max-height);
-            width: 90%;
+            width: 95%; /* Increased from 90% */
             max-width: 600px;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 20px;
-            padding: 15px;
+            padding: 15px; /* Adjusted padding */
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -70,6 +72,7 @@
             position: relative;
             overflow: hidden;
             padding-bottom: 60px; /* Add space for button */
+            text-align: center; /* Center all text content */
         }
 
         .joke-image {
@@ -77,29 +80,36 @@
             height: auto;
             max-height: 40vh;
             object-fit: contain;
-            border-radius: 10px;
+            border-radius: 12px; /* Restored rounded corners */
+            margin: 5px 0; /* Added small margin */
         }
 
         .joke-text {
             font-size: clamp(1rem, 4vw, 1.5rem);
-            margin: 10px 0;
+            margin: 15px auto; /* Changed from 10px 0 to 15px auto */
             flex-grow: 0;
+            max-width: 90%; /* Add max-width for better readability */
+            line-height: 1.4; /* Add line height for better readability */
         }
 
         .share-container {
-            padding: 5px 0;
+            padding: 10px 0; /* Increased padding */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .share-message {
             font-size: clamp(0.8rem, 3vw, 1rem);
-            margin: 5px 0;
+            margin: 10px 0; /* Increased margin */
+            color: #666; /* Added color for better contrast */
         }
 
         .share-buttons {
-            display: flex;  /* This was missing */
+            display: flex;
             justify-content: center;
-            gap: 15px;
-            margin: 10px 0;
+            gap: 20px; /* Increased gap between buttons */
+            margin: 15px 0; /* Increased margin */
         }
 
         .share-button {
@@ -109,11 +119,12 @@
             padding: 8px;
             border-radius: 50%;
             transition: all 0.3s ease;
-            width: 40px;
-            height: 40px;
+            width: 45px;  /* Increased from 40px */
+            height: 45px; /* Increased from 40px */
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.4rem; /* Increased icon size */
         }
 
         .share-button:hover {
@@ -185,18 +196,41 @@
 
         @media (max-width: 480px) {
             .container {
-                padding: 1.5rem;
+                padding: 0.5rem; /* Reduced padding further for mobile */
             }
             
             .joke-image {
                 height: 250px;
+                border-radius: 10px; /* Maintain rounded corners on mobile */
             }
 
             .header {
-                height: 60px;
+                height: 50px;
+                margin-bottom: 5px;
             }
             .logo {
                 height: 40px;
+            }
+            
+            .joke-card {
+                width: 98%; /* Even more width on mobile */
+                padding: 12px; /* Slightly reduced padding */
+                padding-bottom: 60px; /* Maintain space for button */
+                margin-top: 0;
+            }
+
+            .share-button {
+                width: 42px;  /* Slightly smaller on mobile but still larger than before */
+                height: 42px;
+                font-size: 1.3rem;
+            }
+
+            /* Adjust icon sizes */
+            .fa-facebook,
+            .fa-x-twitter,
+            .fa-whatsapp,
+            .fa-copy {
+                font-size: 1.3rem;
             }
         }
 
@@ -210,8 +244,21 @@
             }
             
             .share-button {
-                width: 35px;
-                height: 35px;
+                width: 40px;
+                height: 40px;
+            }
+
+            .header {
+                height: 40px;
+                margin-bottom: 5px;
+            }
+            
+            .logo {
+                height: 30px;
+            }
+            
+            .container {
+                height: calc(100vh - 45px);
             }
         }
 
@@ -501,13 +548,6 @@ function shareJoke(platform) {
         return;
     }
     
-    const thoughtfulIntro = "Found this and thought of you... 😊\n\n";
-    const jokeText = currentJoke.text;
-    const moreJokesText = "\n\nMore Jokes @ LaughFactory.xyz 🎯";
-    const fullText = thoughtfulIntro + jokeText + moreJokesText;
-    const encodedText = encodeURIComponent(fullText);
-    
-    let url;
     switch (platform) {
         case 'facebook':
             url = `https://www.facebook.com/sharer/sharer.php?quote=${encodedText}`;
