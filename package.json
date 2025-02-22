@@ -1,0 +1,29 @@
+{
+  "name": "laugh-factory",
+  "version": "1.0.0",
+  "description": "a repository of great relatable  jokes to make your day",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "sync-images": "node sync-images.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/profitshub/laugh-factory.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/profitshub/laugh-factory/issues"
+  },
+  "homepage": "https://github.com/profitshub/laugh-factory#readme",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "csv-parse": "^5.6.0",
+    "node-fetch": "^2.7.0",
+    "sharp": "^0.33.5"
+  }
+}
