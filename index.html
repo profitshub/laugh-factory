@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laugh Factory 😂</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gradient-1: #ff6b6b;
+            --gradient-2: #4ecdc4;
+            --font-primary: 'Comic Neue', cursive;
+            --font-secondary: 'Patrick Hand', cursive;
+        }
+
+        /* New Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            max-width: 300px;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .logo-placeholder {
+            width: 300px;
+            height: 100px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-secondary);
+            color: #666;
+        }
+
+        /* Swipe Indicator */
+        .swipe-indicator {
+            display: none;
+            text-align: center;
+            margin: 15px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .swipe-indicator {
+                display: block;
+            }
+        }
+
+        /* Rest of existing styles remain the same */
+        body { /* ... */ }
+        .container { /* ... */ }
+        .joke-card { /* ... */ }
+        .joke-image { /* ... */ }
+        .joke-text { /* ... */ }
+        .nav-button { /* ... */ }
+        .loading { /* ... */ }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <!-- Replace this with your logo image -->
+        <div class="logo-placeholder">Your Logo Here</div>
+        <!-- Actual logo (uncomment when ready) -->
+        <!-- <img src="your-logo.png" class="logo" alt="Laugh Factory Logo"> -->
+    </div>
+
+    <div class="container">
+        <div class="loading">Loading jokes... 🤡</div>
+        
+        <div class="joke-card" id="jokeCard">
+            <p class="swipe-indicator">← Swipe left/right →</p>
+            <img src="placeholder.jpg" class="joke-image" id="jokeImage" alt="Joke illustration">
+            <p class="joke-text" id="jokeText"></p>
+        </div>
+
+        <button class="nav-button" onclick="showRandomJoke()">Next Joke ➡️</button>
+    </div>
+
+<script>
+// Previous JavaScript remains the same until image error handler
+
+// Modified image error handling
+jokeImage.onerror = function() {
+    this.src = 'placeholder.jpg'; // Fails silently
+}
+
+// Enhanced swipe support with timeout
+let touchStartX = 0;
+let lastSwipeTime = 0;
+
+document.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+});
+
+document.addEventListener('touchend', e => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const deltaX = touchEndX - touchStartX;
+    const now = Date.now();
+
+    // Prevent rapid swipes
+    if (now - lastSwipeTime > 500) {
+        if (Math.abs(deltaX) > 50) {
+            showRandomJoke();
+            lastSwipeTime = now;
+        }
+    }
+});
+</script>
+</body>
+</html>
